@@ -8,34 +8,34 @@ namespace VendingMachineApp.Entites
     {
         private readonly string _model;
         private readonly string _manufacturer;
-        private readonly List<Beverage> _beverages;
+        private readonly List<IRecipe> _recipes;
 
-        private Beverage _selectedBeverage;
+        private IRecipe _selectedRecipe;
         private bool _allowed;
 
         public VendingMachine(string model, string manufacturer, 
-            List<Beverage> beverages)
+            List<IRecipe> beverages)
         {
             _model = model;
             _manufacturer = manufacturer;
-            _beverages = beverages;
+            _recipes = beverages;
         }
 
         // Display Items on Screen
-        public List<Beverage> DisplayBeverages()
+        public List<IRecipe> DisplayBeverages()
         {
-            return _beverages.ToList();
+            return _recipes.ToList();
         } 
 
-        public Beverage SelectAnItem(int beverageId)
+        public IRecipe SelectAnItem(int item)
         {
-           _selectedBeverage = _beverages.FirstOrDefault(p => p.Id == beverageId);
-            return _selectedBeverage;
+            _selectedRecipe = RecipeFactory.GetRecipe(item);
+            return _selectedRecipe;
         }
 
         public bool InsertCoin(float amount)
         {
-            if (amount < _selectedBeverage.Price)
+            if (amount < _selectedRecipe.Price)
             {
                 return false;
             }
